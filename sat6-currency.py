@@ -11,9 +11,9 @@ requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
 
 parser = argparse.ArgumentParser(description="Satellite 6 version of 'spacewalk-report system-currency'")
 parser.add_argument("-a", "--advanced", action="store_true", default=False, help="Use this flag if you want to divide security errata by severity. Note: this will reduce performance if this script significantly.")
-parser.add_argument("-n", "--server", type=str.lower, help="Satellite server (defaults to localhost)", default='localhost')
-parser.add_argument("-u", "--username", type=str, default=False, help="Username to access Satellite")
-parser.add_argument("-p", "--password", type=str, default=False, help="Password to access Satellite")
+parser.add_argument("-n", "--server", type=str.lower, required=True, help="Satellite server (defaults to localhost)", default='localhost')
+parser.add_argument("-u", "--username", type=str, required=True, help="Username to access Satellite")
+parser.add_argument("-p", "--password", type=str, required=False, help="Password to access Satellite. The user will be asked interactively if password is not provided.")
 
 args = parser.parse_args()
 
@@ -22,12 +22,10 @@ url = "https://" + args.server
 api = url + "/api/"
 katello_api = url + "/katello/api/"
 post_headers = {'content-type': 'application/json'}
-ssl_verify=False
+ssl_verify=True
  
-    # Check username and password
-if not (args.username and args.password):
-    print "No complete account information provided, exiting"
-    sys.exit (-1)
+if args.password is None:
+    args.password = getpass.getpass()
  
 def get_with_json(location, json_data):
     """
@@ -137,5 +135,3 @@ if __name__ == "__main__":
         advanced_currency()
     else:
         simple_currency()
-
-
