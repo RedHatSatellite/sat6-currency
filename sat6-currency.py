@@ -3,21 +3,31 @@
 import argparse
 import json
 import requests
+import sys
+import getpass
 from requests.packages.urllib3.exceptions import InsecureRequestWarning
 requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
  
-# Satellite specific parameters
-url = "https://localhost/"
-api = url + "api/"
-katello_api = url + "katello/api/"
-post_headers = {'content-type': 'application/json'}
-ssl_verify=False
-username = "admin"
-password = "redhat123"
- 
+
 parser = argparse.ArgumentParser(description="Satellite 6 version of 'spacewalk-report system-currency'")
 parser.add_argument("-a", "--advanced", action="store_true", default=False, help="Use this flag if you want to divide security errata by severity. Note: this will reduce performance if this script significantly.")
+parser.add_argument("-n", "--server", type=str.lower, help="Satellite server (defaults to localhost)", default='localhost')
+parser.add_argument("-u", "--username", type=str, default=False, help="Username to access Satellite")
+parser.add_argument("-p", "--password", type=str, default=False, help="Password to access Satellite")
+
 args = parser.parse_args()
+
+# Satellite specific parameters
+url = "https://" + args.server
+api = url + "/api/"
+katello_api = url + "/katello/api/"
+post_headers = {'content-type': 'application/json'}
+ssl_verify=False
+ 
+    # Check username and password
+if not (args.username and args.password):
+    print "No complete account information provided, exiting"
+    sys.exit (-1)
  
 def get_with_json(location, json_data):
     """
@@ -26,7 +36,7 @@ def get_with_json(location, json_data):
     try:
         result = requests.get(location,
                             data=json_data,
-                            auth=(username, password),
+                            auth=(args.username, args.password),
                             verify=ssl_verify,
                             headers=post_headers)
  
@@ -57,10 +67,13 @@ def simple_currency():
             errata_count_sec = host["content_facet_attributes"]["errata_counts"]["security"]
             errata_count_bug = host["content_facet_attributes"]["errata_counts"]["bugfix"]
             errata_count_enh = host["content_facet_attributes"]["errata_counts"]["enhancement"]
- 
+
+            if errata_count_sec is None or errata_count_bug is None or errata_count_enh is None:
+                score = 0
+            else:
             # Calculate weighted score
-            score = errata_count_sec * factor_sec + errata_count_bug * factor_bug + errata_count_enh * factor_enh
- 
+                score = errata_count_sec * factor_sec + errata_count_bug * factor_bug + errata_count_enh * factor_enh
+
             # Print result
             print str(host["id"]) + "," + str(host["organization_id"]) + "," + host["name"] + "," + str(errata_count_sec) + "," + str(errata_count_bug) + "," + str(errata_count_enh) + "," + str(score)
  
@@ -124,4 +137,5 @@ if __name__ == "__main__":
         advanced_currency()
     else:
         simple_currency()
+
 
