@@ -118,7 +118,7 @@ def advanced_currency():
             errata_count_bug = 0
 
             # Check if host have any errrata at all
-            if "total" in erratas:
+            if "total" in erratas and "content_facet_attributes" in host and "subscription_facet_attributes" in host:
                 content_view_name = host["content_facet_attributes"]["content_view"]["name"]
                 content_view_id = host["content_facet_attributes"]["content_view"]["id"]
                 lifecycle_environment = host["content_facet_attributes"]["lifecycle_environment"]["name"]
