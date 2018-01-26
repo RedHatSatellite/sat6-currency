@@ -14,6 +14,7 @@ parser.add_argument("-a", "--advanced", action="store_true", default=False, help
 parser.add_argument("-n", "--server", type=str.lower, required=True, help="Satellite server (defaults to localhost)", default='localhost')
 parser.add_argument("-u", "--username", type=str, required=True, help="Username to access Satellite")
 parser.add_argument("-p", "--password", type=str, required=False, help="Password to access Satellite. The user will be asked interactively if password is not provided.")
+parser.add_argument("-s", "--search", type=str, required=False, help="Search string for host.( like ?search=lifecycle_environment=Test", default=(''))
 
 args = parser.parse_args()
 
@@ -50,7 +51,7 @@ def simple_currency():
     print "system_id,org_name,name,security,bug,enhancement,score,content_view,content_view_ publish_date,lifecycle_environment,subscription_os_release,os_release,arch,subscription_status,comment"
 
     # Get all hosts (alter if you have more than 10000 hosts)
-    hosts = get_with_json(api + "hosts", json.dumps({"per_page": "10000"}))["results"]
+    hosts = get_with_json(api + "hosts" + args.search, json.dumps({"per_page": "10000"}))["results"]
 
     # Multiply factors
     factor_sec = 8
@@ -92,7 +93,7 @@ def advanced_currency():
     print "system_id,org_name,name,critical,important,moderate,low,bug,enhancement,score,content_view,content_view_ publish_date,lifecycle_environment,subscription_os_release,os_release,arch,subscription_status,comment"
 
     # Get all hosts (if you have more than 10000 hosts, this method will take too long itme)
-    hosts = get_with_json(api + "hosts", json.dumps({"per_page": "10000"}))["results"]
+    hosts = get_with_json(api + "hosts" + args.search, json.dumps({"per_page": "10000"}))["results"]
 
     # Multiply factors according to "spacewalk-report system-currency"
     factor_cri = 32
