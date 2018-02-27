@@ -160,10 +160,15 @@ def library_currency():
     # Print headline
     print "system_id,org_name,name,total_available_security,critical,important,moderate,low,bug,enhancement,score,total_applicable_security,applicable_critical,applicable_important,applicable_moderate,applicable_low,applicable_bug,applicable_enhancement,applicable_score,content_view,content_view_publish_date,lifecycle_environment,subscription_os_release,os_release,arch,subscription_status,comment"
     # Open reports files
-    available_file = open('available.csv', 'w')
-    available_file.write('system_id,name,state,errata_id,issued,updated,severity,type,reboot_suggested,title,further_info\n')
-    applicable_file = open('applicable.csv', 'w')
-    applicable_file.write('system_id,name,state,errata_id,issued,updated,severity,type,reboot_suggested,title,further_info\n')
+    available_file = open('available_errata.csv', 'w')
+    available_file.write('system_id,org_name,name,state,errata_id,issued,updated,severity,type,reboot_suggested,title,further_info\n')
+    applicable_file = open('applicable_errata.csv', 'w')
+    applicable_file.write('system_id,org_name,name,state,errata_id,issued,updated,severity,type,reboot_suggested,title,further_info\n')
+
+    # Red Hat errata URL
+    RH_URL = "https://access.redhat.com/errata/"
+    # Fedora EPEL errata URL
+    EPEL_URL = "https://bodhi.fedoraproject.org/updates"
 
     # Find organization
     organization = get_with_json(katello_api + "/organizations/?Search=" + args.organization, json.dumps({"per_page": "10000"}))["results"]
@@ -245,7 +250,10 @@ def library_currency():
                     if errata["type"] == "enhancement": errata_count_enh += 1
                     if errata["type"] == "bugfix": errata_count_bug += 1
 
-                    available_file.write ( str(host["id"]) + "," + host["name"] + ",Available," + str(errata["errata_id"]) + "," + str(errata["issued"]) + "," + str(errata["updated"]) + "," + str(errata["severity"]) + "," + str(errata["type"]) + "," + str(errata["reboot_suggested"]) + "," + str(errata["title"]) + ",<a href=\"https://access.redhat.com/errata/" + str(errata["errata_id"]) + "\">" + str(errata["errata_id"]) + "</a>" + '\n')
+                    # Delete any commas from the errata title
+                    # eg: https://access.redhat.com/errata/RHSA-2017:0817
+                    errata["title"] = errata["title"].replace(',', '')
+                    available_file.write ( str(host["id"]) + "," + str(host["organization_name"]) + "," + host["name"] + ",Available," + str(errata["errata_id"]) + "," + str(errata["issued"]) + "," + str(errata["updated"]) + "," + str(errata["severity"]) + "," + str(errata["type"]) + "," + str(errata["reboot_suggested"]) + "," + str(errata["title"]) + "," + str(RH_URL) + str(errata["errata_id"]) + '\n')
 
                 # Go through each errata that is applicable (in the library)
                 for errata in applicable_erratas["results"]:
@@ -261,8 +269,11 @@ def library_currency():
                     if errata["type"] == "enhancement": applicable_errata_count_enh += 1
                     if errata["type"] == "bugfix": applicable_errata_count_bug += 1
 
+                    # Delete any commas from the errata title
+                    # eg: https://access.redhat.com/errata/RHSA-2017:0817
+                    errata["title"] = errata["title"].replace(',', '')
                     # print str(host["id"]) + "," + host["name"] + ",Applicable," + str(errata["errata_id"]) + "," + str(errata["issued"]) + "," + str(errata["updated"]) + "," + str(errata["severity"]) + "," + str(errata["type"]) + "," + str(errata["reboot_suggested"]) + "," + str(errata["updated"]) + "," + str(errata["title"]) + ",<a href=\"https://access.redhat.com/errata/" + str(errata["errata_id"]) + "\">" + str(errata["errata_id"]) + "</a>"
-                    applicable_file.write ( str(host["id"]) + "," + host["name"] + ",Applicable," + str(errata["errata_id"]) + "," + str(errata["issued"]) + "," + str(errata["updated"]) + "," + str(errata["severity"]) + "," + str(errata["type"]) + "," + str(errata["reboot_suggested"]) + "," + str(errata["title"]) + ",<a href=\"https://access.redhat.com/errata/" + str(errata["errata_id"]) + "\">" + str(errata["errata_id"]) + "</a>" + '\n')
+                    applicable_file.write ( str(host["id"]) + "," + str(host["organization_name"]) + "," + host["name"] + ",Applicable," + str(errata["errata_id"]) + "," + str(errata["issued"]) + "," + str(errata["updated"]) + "," + str(errata["severity"]) + "," + str(errata["type"]) + "," + str(errata["reboot_suggested"]) + "," + str(errata["title"])  + "," + str(RH_URL) + str(errata["errata_id"]) + '\n')
 
             # Calculate weighted score
             score = factor_cri * errata_count_cri + factor_imp * errata_count_imp + factor_mod * errata_count_mod + factor_low * errata_count_low + factor_bug * errata_count_bug + factor_enh * errata_count_enh
