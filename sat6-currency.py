@@ -5,28 +5,62 @@ import json
 import requests
 import sys
 import getpass
+import os
+import yaml
 from requests.packages.urllib3.exceptions import InsecureRequestWarning
 requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
 
 
 parser = argparse.ArgumentParser(description="Satellite 6 version of 'spacewalk-report system-currency'")
 parser.add_argument("-a", "--advanced", action="store_true", default=False, help="Use this flag if you want to divide security errata by severity. Note: this will reduce performance if this script significantly.")
-parser.add_argument("-n", "--server", type=str.lower, required=True, help="Satellite server (defaults to localhost)", default='localhost')
-parser.add_argument("-u", "--username", type=str, required=True, help="Username to access Satellite")
-parser.add_argument("-p", "--password", type=str, required=False, help="Password to access Satellite. The user will be asked interactively if password is not provided.")
+parser.add_argument("-c", "--config", type=argparse.FileType(mode='r'), nargs='?', help="Hammer CLI config file (defaults to ~/.hammer/cli_config.yml", const=os.path.expanduser('~/.hammer/cli_config.yml'))
+parser.add_argument("-n", "--server", type=str.lower, help="Satellite server")
+parser.add_argument("-u", "--username", type=str, help="Username to access Satellite")
+parser.add_argument("-p", "--password", type=str, help="Password to access Satellite. The user will be asked interactively if password is not provided.")
 parser.add_argument("-s", "--search", type=str, required=False, help="Search string for host.( like ?search=lifecycle_environment=Test", default=(''))
 
 args = parser.parse_args()
 
+server = args.server
+username = args.username
+password = args.password
+
+# If config option specified, read Hammer CLI config file
+if args.config is not None:
+    # Load the configuration file
+    config = yaml.safe_load(args.config)
+    # If the key is present in the config file, attempt to load values
+    # Values specified on the commandline take precendence over config file
+    key = ':foreman'
+    try:
+        server = config[key][':host'] if args.server is None else args.server
+    except(KeyError):
+        pass
+    try:
+        username = config[key][':username'] if args.username is None else args.username
+    except(KeyError):
+        pass
+    try:
+        password = config[key][':password'] if args.password is None else args.password
+    except(KeyError):
+        pass
+
+if server is None:
+    raise ValueError("Server was not specified")
+if username is None:
+    raise ValueError("Username was not specified")
+if password is None:
+    password = getpass.getpass()
+
 # Satellite specific parameters
-url = "https://" + args.server
+if server.startswith('https://'):
+    url = server.strip('/')
+else:
+    url = "https://{}".format(server)
 api = url + "/api/"
 katello_api = url + "/katello/api/v2"
 post_headers = {'content-type': 'application/json'}
 ssl_verify=True
-
-if args.password is None:
-    args.password = getpass.getpass()
 
 def get_with_json(location, json_data):
     """
@@ -35,7 +69,7 @@ def get_with_json(location, json_data):
     try:
         result = requests.get(location,
                             data=json_data,
-                            auth=(args.username, args.password),
+                            auth=(username, password),
                             verify=ssl_verify,
                             headers=post_headers)
 
