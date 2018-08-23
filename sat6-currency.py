@@ -77,7 +77,11 @@ def get_with_json(location, json_data):
         print sys.argv[0] + " Couldn't connect to the API, check connection or url"
         print e
         sys.exit(1)
-    return result.json()
+    if result.ok:
+        return result.json()
+    else:
+        print sys.argv[0] + " Error connecting to '" + location + "'. HTTP Status: " + str(result.status_code)
+        sys.exit(1)
 
 def simple_currency():
 
