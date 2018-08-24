@@ -57,11 +57,11 @@ Applicable errata are those in the Library or reference content view which are a
 | content_view | Name of the Content View server is registered to |
 | content_view_publish_date | Date on which the Content View was published |
 | lifecycle_environment | Name of the Lifecycle Environment server is registered to |
-| subscription_os_release | |
-| os_release | |
-| arch | CPU architecture |
-| subscription_status | |
-| comment | |
+| subscription_os_release | Subscribed OS repository, e.g 7Server, 7.5 |
+| os_release | OS release, e.g. RHEL 7.5 |
+| arch | CPU architecture, e.g. x86_64 |
+| subscription_status | Server's subscription status |
+| comment | Server description |
 
 ## Advanced report
 
@@ -80,11 +80,11 @@ Applicable errata are those in the Library or reference content view which are a
 | content_view | Name of the Content View server is registered to |
 | content_view_publish_date | Date on which the Content View was published |
 | lifecycle_environment | Name of the Lifecycle Environment server is registered to |
-| subscription_os_release |  |
-| os_release |  |
+| subscription_os_release | Subscribed OS repository, e.g 7Server, 7.5 |
+| os_release | OS release, e.g. RHEL 7.5 |
 | arch | CPU architecture |
-| subscription_status |  |
-| comment |  |
+| subscription_status | Server's subscription status |
+| comment | Server description |
 
 ## Library report
 
@@ -112,11 +112,11 @@ Applicable errata are those in the Library or reference content view which are a
 | content_view | Name of the Content View server is registered to |
 | content_view_publish_date | Date on which the Content View was published |
 | lifecycle_environment | Name of the Lifecycle Environment server is registered to |
-| subscription_os_release |  |
-| os_release |  |
+| subscription_os_release | Subscribed OS repository, e.g 7Server, 7.5 |
+| os_release | OS release, e.g. RHEL 7.5 |
 | arch | CPU architecture |
-| subscription_status |  |
-| comment |  |
+| subscription_status | Server's subscription status |
+| comment | Server description |
 
 ### Errata report
 

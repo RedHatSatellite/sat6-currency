@@ -221,7 +221,7 @@ def simple_currency():
             subscription_os_release = host[
                 "subscription_facet_attributes"]["release_version"]
             arch = host["architecture_name"]
-            subscription_status = host["subscription_status"]
+            subscription_status = host["subscription_status_label"]
             os_release = host["operatingsystem_name"]
 
             content_view = get_with_json(
@@ -350,7 +350,7 @@ def advanced_currency():
                 subscription_os_release = host[
                     "subscription_facet_attributes"]["release_version"]
                 arch = host["architecture_name"]
-                subscription_status = host["subscription_status"]
+                subscription_status = host["subscription_status_label"]
                 os_release = host["operatingsystem_name"]
 
                 content_view = get_with_json(
@@ -570,7 +570,7 @@ def library_currency():
                 subscription_os_release = host[
                     "subscription_facet_attributes"]["release_version"]
                 arch = host["architecture_name"]
-                subscription_status = host["subscription_status"]
+                subscription_status = host["subscription_status_label"]
                 os_release = host["operatingsystem_name"]
 
                 content_view = get_with_json(
