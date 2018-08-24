@@ -37,28 +37,27 @@ Server, username and password may be loaded from a [Hammer CLI configuration fil
 ↪ ./sat6Inventory.py -f [path/to/config.yml]
 ~~~
 
-# Output
-## Scores
-A score is shown for each host, based on the number and severity of outstanding errata. Each errata adds the factor for its severity. Simple (default) and advanced mode calculates scores differently.
+# Scores
+A score is shown for each host, based on the number and severity of outstanding errata. Each errata adds the factor for its severity. The advanced report differentiates security errata based on their severity level.
 
-### Basic report factors
+## Basic report factors
 
-| Severity | Factor |
-|----------|-------:|
-| security | 8 |
-| bug fix | 2 |
-| enhancement | 1 |
+| Severity    | Factor |
+|-------------|-------:|
+| Security    |      8 |
+| Bug Fix     |      2 |
+| Enhancement |      1 |
 
-### Advanced report factors
+## Advanced report factors
 
-| Severity | Factor |
-|----------|-------:|
-| security: critical | 32 |
-| security: important | 16 |
-| security: moderate | 8 |
-| security: low | 4 |
-| bug fix | 2 |
-| enhancement | 1 |
+| Severity            | Factor |
+|---------------------|-------:|
+| Security: Critical  |     32 |
+| Security: Important |     16 |
+| Security: Moderate  |      8 |
+| Security: Low       |      4 |
+| Bug Fix             |      2 |
+| Enhancement         |      1 |
 
 # Notes
 
