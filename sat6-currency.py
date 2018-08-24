@@ -164,10 +164,26 @@ def get_with_json(location, json_data):
 def simple_currency():
 
     # Print headline
-    print("system_id,org_name,name,security,bug,enhancement,score,"
-          "content_view,content_view_ publish_date,lifecycle_environment,"
-          "subscription_os_release,os_release,arch,subscription_status,"
-          "comment")
+    print(
+        ','.join(str(x) for x in [
+            "system_id",
+            "org_name",
+            "name",
+            "security",
+            "bug",
+            "enhancement",
+            "score",
+            "content_view",
+            "content_view_publish_date",
+            "lifecycle_environment",
+            "subscription_os_release",
+            "os_release",
+            "arch",
+            "subscription_status",
+            "comment"
+        ]
+                 )
+    )
 
     # Get all hosts (alter if you have more than 10000 hosts)
     hosts = get_with_json(
@@ -259,10 +275,29 @@ def simple_currency():
 def advanced_currency():
 
     # Print headline
-    print("system_id,org_name,name,critical,important,moderate,low,bug,"
-          "enhancement,score,content_view,content_view_ publish_date,"
-          "lifecycle_environment,subscription_os_release,os_release,arch,"
-          "subscription_status,comment")
+    print(
+        ','.join(str(x) for x in [
+            "system_id",
+            "org_name",
+            "name",
+            "critical",
+            "important",
+            "moderate",
+            "low",
+            "bug",
+            "enhancement",
+            "score",
+            "content_view",
+            "content_view_publish_date",
+            "lifecycle_environment",
+            "subscription_os_release",
+            "os_release",
+            "arch",
+            "subscription_status",
+            "comment"
+        ]
+                 )
+    )
 
     # Get all hosts (for more than 10000 hosts, this will take a long time)
     hosts = get_with_json(
@@ -393,14 +428,37 @@ def library_currency():
 
     # Print headline
     print(
-        "system_id,org_name,name,total_available_security,critical,"
-        "important,moderate,low,bug,enhancement,score,"
-        "total_applicable_security,applicable_critical,applicable_important,"
-        "applicable_moderate,applicable_low,applicable_bug,"
-        "applicable_enhancement,applicable_score,content_view,"
-        "content_view_publish_date,lifecycle_environment,"
-        "subscription_os_release,os_release,arch,subscription_status,comment"
-          )
+        ','.join(str(x) for x in [
+            "system_id",
+            "org_name",
+            "name",
+            "critical",
+            "important",
+            "moderate",
+            "low",
+            "bug",
+            "enhancement",
+            "score",
+            "total_applicable_security",
+            "applicable_critical",
+            "applicable_important",
+            "applicable_moderate",
+            "applicable_low",
+            "applicable_bug",
+            "applicable_enhancement",
+            "applicable_score",
+            "content_view",
+            "content_view_publish_date",
+            "lifecycle_environment",
+            "subscription_os_release",
+            "os_release",
+            "arch",
+            "subscription_status",
+            "comment",
+        ]
+                 )
+    )
+
     # Open reports files
     available_file = open('available_errata.csv', 'w')
     available_file.write(

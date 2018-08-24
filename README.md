@@ -37,6 +37,82 @@ Server, username and password may be loaded from a [Hammer CLI configuration fil
 ↪ ./sat6Inventory.py -f [path/to/config.yml]
 ~~~
 
+# Output
+
+## Basic report
+
+| Column | Description |
+|--------|-------------|
+| system_id | Server ID |
+| org_id | Organization ID which is server registered to |
+| name | Name of the server |
+| security | Number of security updates available |
+| bug | Number of bug fixes available |
+| enhancement | Number of enhancements available |
+| score | Total system score |
+| content_view | Name of the Content View server is registered to |
+| content_view_publish_date | Date on which the Content View was published |
+| lifecycle_environment | Name of the Lifecycle Environment server is registered to |
+| subscription_os_release | |
+| os_release | |
+| arch | CPU architecture |
+| subscription_status | |
+| comment | |
+
+## Advanced report
+
+| Column | Description |
+|--------|-------------|
+| system_id | Server ID |
+| org_id | Organization ID which is server registered to |
+| name | Name of the server |
+| critical | Number of critical security updates available |
+| important | Number of important security updates available |
+| moderate | Number of moderate importance security updates available |
+| low | Number of low importance security updates available |
+| bug | Number of bug fixes available |
+| enhancement | Number of enhancements available |
+| score | Total system score |
+| content_view | Name of the Content View server is registered to |
+| content_view_publish_date | Date on which the Content View was published |
+| lifecycle_environment | Name of the Lifecycle Environment server is registered to |
+| subscription_os_release |  |
+| os_release |  |
+| arch | CPU architecture |
+| subscription_status |  |
+| comment |  |
+
+## Library report
+
+| Column | Description |
+|--------|-------------|
+| system_id | Server ID |
+| org_id | Organization ID which is server registered to |
+| name | Name of the server |
+| critical | Number of critical security updates available |
+| important | Number of important security updates available |
+| moderate | Number of moderate importance security updates available |
+| low | Number of low importance security updates available |
+| bug | Number of bug fixes available |
+| enhancement | Number of enhancements available |
+| score | Total system score |
+| total_applicable_security | |
+| applicable_critical | Number of critical security updates applicable |
+| applicable_important | Number of important security updates applicable |
+| applicable_moderate | Number of moderate security updates applicable |
+| applicable_low | Number of low security updates applicable |
+| applicable_bug | Number of bug fixes applicable |
+| applicable_enhancement | Number of enhancements applicable |
+ |applicable_score | Total score of applicable errata |
+| content_view | Name of the Content View server is registered to |
+| content_view_publish_date | Date on which the Content View was published |
+| lifecycle_environment | Name of the Lifecycle Environment server is registered to |
+| subscription_os_release |  |
+| os_release |  |
+| arch | CPU architecture |
+| subscription_status |  |
+| comment |  |
+
 # Scores
 A score is shown for each host, based on the number and severity of outstanding errata. Each errata adds the factor for its severity. The advanced report differentiates security errata based on their severity level.
 
