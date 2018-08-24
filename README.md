@@ -38,6 +38,10 @@ Server, username and password may be loaded from a [Hammer CLI configuration fil
 ~~~
 
 # Output
+The tables below describe the meaning of each column in the output.
+
+Available errata, also known as installable errata, are those in a server's content view which are able to be installed.
+Applicable errata are those in the Library or reference content view which are applicable to the server.
 
 ## Basic report
 
@@ -89,6 +93,7 @@ Server, username and password may be loaded from a [Hammer CLI configuration fil
 | system_id | Server ID |
 | org_id | Organization ID which is server registered to |
 | name | Name of the server |
+| total_available_security | Total number of security updates available Total number of security updates available |
 | critical | Number of critical security updates available |
 | important | Number of important security updates available |
 | moderate | Number of moderate importance security updates available |
@@ -96,7 +101,7 @@ Server, username and password may be loaded from a [Hammer CLI configuration fil
 | bug | Number of bug fixes available |
 | enhancement | Number of enhancements available |
 | score | Total system score |
-| total_applicable_security | |
+| total_applicable_security | Total number of security updates applicable |
 | applicable_critical | Number of critical security updates applicable |
 | applicable_important | Number of important security updates applicable |
 | applicable_moderate | Number of moderate security updates applicable |
@@ -113,20 +118,37 @@ Server, username and password may be loaded from a [Hammer CLI configuration fil
 | subscription_status |  |
 | comment |  |
 
+### Errata report
+
+| Column | Description |
+|--------|-------------|
+| system_id | Server ID |
+| org_id | Organization ID which is server registered to |
+| name | Name of the server |
+| state | State of the errata: Available or Applicable |
+| errata_id | ID of the errata|
+| issued | Date the errata was issued |
+| updated | Date the errata was updated |
+| severity | Errata security severity |
+| type | Errata type |
+| reboot_suggested | Does the errata suggest rebooting the system after installation |
+| title | Title of the errata |
+| further_info | URL to errata information web page |
+
 # Scores
-A score is shown for each host, based on the number and severity of outstanding errata. Each errata adds the factor for its severity. The advanced report differentiates security errata based on their severity level.
+A score is shown for each host, based on the number and type of outstanding errata. Each errata adds the factor for its type. The advanced report differentiates security errata based on their severity.
 
 ## Basic report factors
 
-| Severity    | Factor |
-|-------------|-------:|
-| Security    |      8 |
-| Bug Fix     |      2 |
-| Enhancement |      1 |
+| Type/Severity | Factor |
+|---------------|-------:|
+| Security      |      8 |
+| Bug Fix       |      2 |
+| Enhancement   |      1 |
 
 ## Advanced report factors
 
-| Severity            | Factor |
+| Type/Severity       | Factor |
 |---------------------|-------:|
 | Security: Critical  |     32 |
 | Security: Important |     16 |

@@ -432,6 +432,7 @@ def library_currency():
             "system_id",
             "org_name",
             "name",
+            "total_available_security",
             "critical",
             "important",
             "moderate",
