@@ -649,7 +649,7 @@ def library_currency():
                     # Delete any commas from the errata title
                     # eg: https://access.redhat.com/errata/RHSA-2017:0817
                     errata["title"] = errata["title"].replace(',', '')
-                    available_file.write(
+                    applicable_file.write(
                         ','.join(str(x) for x in [
                             str(host["id"]),
                             str(host["organization_name"]),
