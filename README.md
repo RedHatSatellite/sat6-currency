@@ -1,34 +1,47 @@
 # sat6-currency
-Satellite 6 version of 'spacewalk-report system-currency'
+Satellite 6 version of 'spacewalk-report system-currency'. 
 
-## Requirements
+# Requirements
+
 * Python 2.x
 * [Requests](http://python-requests.org/)
 * [PyYAML](https://pyyaml.org/)
 
-## Usage
-Specify server and username on commandline. The script will prompt for password.
-```bash
-python sat6-currency.py -n satellite.example.com -u admin
-```
+Tested from RHEL 7.5 against Satellite 6.3.2.
 
-Load server, username and password from a [Hammer CLI configuration file](https://github.com/theforeman/hammer-cli-foreman/blob/master/doc/configuration.md). Default path is `~/.hammer/cli_config.yml`.
-```bash
-python sat6-currency.py -c [path/to/config.yml]
-```
+# Usage
+## Basic report
+A CSV file is printed on stdout listing each system with details of the number of security, bug and enhancement errata that are available on each host.
 
-Use advanced mode to divide security errata by severity.
-```bash
-python sat6-currency.py -c --advanced
-```
+~~~
+↪ ./sat6Inventory.py -n SERVER -u USERNAME [-p PASSWORD]
+~~~
 
-## Output
-The script outputs csv to stdout.
+## Advanced report
+A CSV file is printed on stdout listing each system with details of the number of security, bug and enhancement errata that are available on each host.  The report takes longer to run, but shows the breakdown of security errata by critical, important, moderate and low severity levels.
 
-### Scores
+~~~
+↪ ./sat6Inventory.py -a -n SERVER -u USERNAME [-p PASSWORD] -o 'MyOrganization'
+~~~
+
+## Library report
+A CSV file is printed on stdout listing each system with details of the number of security, bug and enhancement errata that are both available and applicable to each host.  The report takes longer to run, but shows the breakdown of security errata by critical, important, moderate and low severity levels.  In addition, two CSV files are generated in the working directory listing available and applicable errata for each host.
+
+~~~
+↪ ./sat6Inventory.py -l -n SERVER -u USERNAME [-p PASSWORD] -o 'MyOrganization'
+~~~
+
+## Configuration file
+Server, username and password may be loaded from a [Hammer CLI configuration file](https://github.com/theforeman/hammer-cli-foreman/blob/master/doc/configuration.md) instead of being specified on the command line. The default path for the configuration file is `~/.hammer/cli_config.yml`.
+~~~
+↪ ./sat6Inventory.py -f [path/to/config.yml]
+~~~
+
+# Output
+## Scores
 A score is shown for each host, based on the number and severity of outstanding errata. Each errata adds the factor for its severity. Simple (default) and advanced mode calculates scores differently.
 
-#### Simple mode factors
+### Basic report factors
 
 | Severity | Factor |
 |----------|-------:|
@@ -36,7 +49,7 @@ A score is shown for each host, based on the number and severity of outstanding 
 | bug fix | 2 |
 | enhancement | 1 |
 
-#### Advanced mode factors
+### Advanced report factors
 
 | Severity | Factor |
 |----------|-------:|
@@ -47,30 +60,6 @@ A score is shown for each host, based on the number and severity of outstanding 
 | bug fix | 2 |
 | enhancement | 1 |
 
-## Help Output
-```
-$ python sat6-currency.py
-usage: sat6-currency.py [-h] [-a] [-c [CONFIG]] [-n SERVER] [-u USERNAME]
-                        [-p PASSWORD] [-s SEARCH]
+# Notes
 
-Satellite 6 version of 'spacewalk-report system-currency'
-
-optional arguments:
-  -h, --help            show this help message and exit
-  -a, --advanced        Use this flag if you want to divide security errata by
-                        severity. Note: this will reduce performance if this
-                        script significantly.
-  -c [CONFIG], --config [CONFIG]
-                        Hammer CLI config file (defaults to
-                        ~/.hammer/cli_config.yml
-  -n SERVER, --server SERVER
-                        Satellite server
-  -u USERNAME, --username USERNAME
-                        Username to access Satellite
-  -p PASSWORD, --password PASSWORD
-                        Password to access Satellite. The user will be asked
-                        interactively if password is not provided.
-  -s SEARCH, --search SEARCH
-                        Search string for host.( like
-                        ?search=lifecycle_environment=Test
-```
+* The script will prompt for password if not provided
