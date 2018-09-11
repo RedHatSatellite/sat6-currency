@@ -150,14 +150,14 @@ def get_with_json(location, json_data):
 
     except requests.ConnectionError, e:
         print("{} Couldn't connect to the API,"
-              " check connection or url".format(sys.argv[0]))
+              " check connection or url".format(location))
         print(e)
         sys.exit(1)
     if result.ok:
         return result.json()
     else:
         print(" Error connecting to '{}'. HTTP Status: {}".format(
-            sys.argv[0], str(result.status_code)))
+            location, str(result.status_code)))
         sys.exit(1)
 
 
